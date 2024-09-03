@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zasti Carbon Calculator - Create New Scenario</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container-fluid vh-100">
+        <div class="row h-100">
+            <div class="col-3 col-md-2 bg-green sidebar d-flex flex-column align-items-center">
+                <div class="logo-container py-4 text-center">
+                    <img src="images/logo.png" alt="Zasti Logo" class="logo img-fluid">
+                    <h4 class="text-white mt-3">Zasti Carbon Calculator</h4>
+                </div>
+                <ul class="nav flex-column w-100 mt-4">
+                    <li id="results-tab" class="nav-item text-white py-3 text-center mb-3">
+                        <a href="results.html" class="text-white text-decoration-none">
+                            <i class="fas fa-chart-bar me-2"></i> Carbon Footprint
+                        </a>
+                    </li>
+                    <li id="scenarios-tab" class="nav-item text-white py-3 text-center">
+                        <a href="scenarios.html" class="text-white text-decoration-none">
+                            <i class="fas fa-layer-group me-2"></i> Product Systems
+                        </a>
+                    </li>
+                    <li id="chat-tab" class="nav-item text-white py-3 text-center">
+                        <a href="chat.html" class="text-white text-decoration-none">
+                            <i class="fas fa-comment-dots me-2"></i> Chat with Zasti AI
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-9 main-content-new-scenario">
+                <h4 class="text-dark mb-4">Create New Product System</h4>
+                <!-- Tabs Navigation -->
+                <ul class="nav nav-tabs" id="newScenarioTabs">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="new-scenario-info-tab" data-bs-toggle="tab" href="#new-scenario-info">Product System Info</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="new-facility-details-tab" data-bs-toggle="tab" href="#new-facility-details">Life Cycle Data</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="new-emission-factors-tab" data-bs-toggle="tab" href="#new-emission-factors">Emission Factors</a>
+                    </li>
+                </ul>
+
+                <!-- Tab Contents -->
+                <div class="tab-content mt-3">
+                    <!-- Scenario Info Tab -->
+                    <div class="tab-pane fade show active" id="new-scenario-info">
+                        <form id="scenarioInfoForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="newScenarioName" class="form-label required">Product System Name</label>
+                                    <input type="text" class="form-control" id="newScenarioName" placeholder="Enter product system name" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="newCreatedDate" class="form-label">Created Date</label>
+                                    <input type="text" class="form-control" id="newCreatedDate" value="" readonly>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="newFarmLandArea" class="form-label required">Farm Land Area</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="newFarmLandArea" placeholder="Enter area" required>
+                                        <select class="form-select" id="newAreaUnit">
+                                            <option value="acres">Acres</option>
+                                            <option value="hectares">Hectares</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="productType" class="form-label required">Product Type</label>
+                                    <select class="form-select" id="productType" required>
+                                        <option value="hempMilk">Hemp Milk</option>
+                                        <option value="hempEnergy">Hemp Energy</option>
+                                        <option value="dual">Dual</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label for="newLandComments" class="form-label optional">Comments (Optional)</label>
+                                    <textarea class="form-control" id="newLandComments" rows="3" placeholder="Enter any comments..."></textarea>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="d-flex justify-content-between mt-4">
+                            <button class="btn btn-secondary" onclick="window.location.href='scenarios.html'">Back</button>
+                            <button class="btn btn-primary" onclick="saveScenarioInfo()">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Facility Details Tab -->
+                    <div class="tab-pane fade" id="new-facility-details">
+                        <!-- Facility Details Tabs -->
+                        <ul class="nav nav-pills mb-3" id="facilityDetailsTabs">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="raw-material-stage-tab" data-bs-toggle="pill" href="#raw-material-stage">Raw Material Stage</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="manufacturing-stage-tab" data-bs-toggle="pill" href="#manufacturing-stage">Manufacturing</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="transportation-stage-tab" data-bs-toggle="pill" href="#transportation-stage">Transportation</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="use-stage-tab" data-bs-toggle="pill" href="#use-stage">Use Stage</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="disposal-stage-tab" data-bs-toggle="pill" href="#disposal-stage">Disposal </a>
+                            </li>
+                        </ul>
+
+                        <!-- Tab Content -->
+                        <div class="tab-content">
+                            <!-- Raw Material Stage -->
+                            <div class="tab-pane fade show active" id="raw-material-stage">
+                                <button class="btn btn-primary mb-3" onclick="enableFacilityEditing('raw-material-stage')">Edit</button>
+                                <div class="save-cancel-buttons mb-3" style="display: none;">
+                                    <button class="btn btn-success" onclick="saveFacilityChanges('raw-material-stage')">Save</button>
+                                    <button class="btn btn-secondary" onclick="cancelFacilityChanges('raw-material-stage')">Cancel</button>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover">
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th>Process</th>
+                                                <th class="amount-column">Amount</th>
+                                                <th>Unit</th>
+                                                <th>Basis</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><input type="text" class="form-control process-input" value="Seed Production" disabled></td>
+                                                <td><input type="number" class="form-control amount-input" value="1850" disabled></td>
+                                                <td>
+                                                    <select class="form-select unit-select" disabled>
+                                                        <option value="tonnes">tonnes</option>
+                                                        <option value="kg">kg</option>
+                                                        <option value="g">g</option>
+                                                        <option value="mg">mg</option>
+                                                        <option value="lbs">lbs</option>
+                                                        <option value="L">L</option>
+                                                        <option value="gal">gal</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <select class="form-select basis-select" disabled>
+                                                        <option value="/ha.year">/ha.year</option>
+                                                        <option value="/acre.year">/acre.year</option>
+                                                        <option value="/ha">/ha</option>
+                                                        <option value="/acre">/acre</option>
+                                                        <option value="/year">/year</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-danger" onclick="this.parentElement.parentElement.remove()">
+                                                        <i class="fas fa-trash-alt"></i> Delete
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <!-- Add more rows as needed -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <button class="btn btn-sm btn-success" onclick="addRow('raw-material-stage')">
+                                    <i class="fas fa-plus"></i> Add New Row
+                                </button>
+                            </div>
+
+                            
+                            <!-- Manufacturing Stage -->
+                            <div class="tab-pane fade" id="manufacturing-stage">
+                                <button class="btn btn-primary mb-3" onclick="enableFacilityEditing('manufacturing-stage')">Edit</button>
+                                <div class="save-cancel-buttons mb-3" style="display: none;">
+                                    <button class="btn btn-success" onclick="saveFacilityChanges('manufacturing-stage')">Save</button>
+                                    <button class="btn btn-secondary" onclick="cancelFacilityChanges('manufacturing-stage')">Cancel</button>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover">
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th>Process</th>
+                                                <th class="amount-column">Amount</th>
+                                                <th>Unit</th>
+                                                <th>Basis</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Electricity</td>
+                                                <td class="amount-column">10</td>
+                                                <td>kWh/ton</td>
+                                                <td></td> <!-- Added empty cell for 'Basis' -->
+                                                <td></td> <!-- Added empty cell for 'Actions' -->
+                                            </tr>
+                                       
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <button class="btn btn-sm btn-success" onclick="addRow('manufacturing-stage')">
+                                    <i class="fas fa-plus"></i> Add New Row
+                                </button>
+                            </div> <!-- Properly closing the manufacturing-stage div -->
+                            
+
+                            <!-- Transportation Stage -->
+                            <div class="tab-pane fade" id="transportation-stage">
+                                <button class="btn btn-primary mb-3" onclick="enableFacilityEditing('transportation-stage')">Edit</button>
+                                <div class="save-cancel-buttons mb-3" style="display: none;">
+                                    <button class="btn btn-success" onclick="saveFacilityChanges('transportation-stage')">Save</button>
+                                    <button class="btn btn-secondary" onclick="cancelFacilityChanges('transportation-stage')">Cancel</button>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover">
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th>Process</th>
+                                                <th class="amount-column">Amount</th>
+                                                <th>Unit</th>
+                                                <th>Basis</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Proportion of heat used vs wasted</td>
+                                                <td class="amount-column">30%</td>
+                                                <td>-</td>
+                                            </tr>
+                                            <!-- Add more rows as needed -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <button class="btn btn-sm btn-success" onclick="addRow('transportation-stage')">
+                                    <i class="fas fa-plus"></i> Add New Row
+                                </button>
+                            </div>
+
+                            <!-- Use Stage (Empty) -->
+                            <div class="tab-pane fade" id="use-stage">
+                                <p>No data available for this stage.</p>
+                            </div>
+
+                            <!-- Disposal Stage (Empty) -->
+                            <div class="tab-pane fade" id="disposal-stage">
+                                <p>No data available for this stage.</p>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <button class="btn btn-secondary" onclick="navigateToNewTab('new-scenario-info-tab')">Back</button>
+                            <button class="btn btn-primary" onclick="navigateToNewTab('new-emission-factors-tab')">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Emission Factors Tab -->
+                    <div class="tab-pane fade" id="new-emission-factors">
+                        <!-- Button group with Back and Save and Generate buttons -->
+                        <div class="d-flex justify-content-between mt-4 mb-3">
+                            <button class="btn btn-secondary" onclick="navigateToNewTab('new-facility-details-tab')">Back</button>
+                            <button class="btn btn-success" onclick="saveAndGenerateNewScenario()">Save and Generate</button>                            
+                        </div>
+                        <button class="btn btn-primary mb-4" onclick="enableEditing('new-emission-factors')">Edit</button>
+                        <div class="save-cancel-buttons mb-3" style="display: none;">
+                            <button class="btn btn-success" onclick="saveChanges('new-emission-factors')">Save</button>
+                            <button class="btn btn-secondary" onclick="cancelChanges('new-emission-factors')">Cancel</button>
+                        </div>
+                        <form id="emissionFactorsForm">
+                            <!-- Add a scrollable container for the table -->
+                            <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                                <table class="table table-bordered">
+                                    <thead class="table-dark"> 
+                                        <tr>
+                                            <th>Process</th>
+                                            <th>Basis</th>
+                                            <th>Value(kgCO2eq)</th>
+                                            <th>Source</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="emissionFactorsTableBody">
+                                        <!-- Table rows will be populated by JavaScript -->
+                                    </tbody>
+                                </table>
+     <!-- Modal Structure -->
+<div class="modal fade" id="editGwpModal" tabindex="-1" role="dialog" aria-labelledby="editGwpModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editGwpModalLabel">Edit Emission Factor</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editGwpForm">
+                    <div class="form-group">
+                        <label for="gwpMethodSelect">GWP Method</label>
+                        <select id="gwpMethodSelect" class="form-control" onchange="updateGwpValues()">
+                            <option value="method1">Method 1</option>
+                            <option value="method2">Method 2</option>
+                            <option value="method3">Method 3</option>
+                        </select>
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Emission</th>
+                                <th>Basis</th>
+                                <th>Unit</th>
+                                <th>Value</th>
+                                <th>GWP Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Carbon Dioxide</td>
+                                <td>
+                                    <select class="form-control" id="co2Basis" onchange="updateCalculation()">
+                                        <option value="per kg">per kg</option>
+                                        <option value="per ton">per ton</option>
+                                        <option value="per L">per L</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-control" id="co2Unit" onchange="updateCalculation()">
+                                        <option value="kg">kg</option>
+                                        <option value="g">g</option>
+                                        <option value="mg">mg</option>
+                                    </select>
+                                </td>
+                                <td><input type="number" class="form-control" id="carbonDioxideInput" placeholder="Enter CO2 value" oninput="updateCalculation()"></td>
+                                <td><input type="number" class="form-control" id="co2GwpValue" oninput="updateCalculation()"></td>
+                            </tr>
+                            <tr>
+                                <td>Nitroxide</td>
+                                <td>
+                                    <select class="form-control" id="n2oBasis" onchange="updateCalculation()">
+                                        <option value="per kg">per kg</option>
+                                        <option value="per ton">per ton</option>
+                                        <option value="per L">per L</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-control" id="n2oUnit" onchange="updateCalculation()">
+                                        <option value="kg">kg</option>
+                                        <option value="g">g</option>
+                                        <option value="mg">mg</option>
+                                    </select>
+                                </td>
+                                <td><input type="number" class="form-control" id="nitroxideInput" placeholder="Enter N2O value" oninput="updateCalculation()"></td>
+                                <td><input type="number" class="form-control" id="n2oGwpValue" oninput="updateCalculation()"></td>
+                            </tr>
+                            <tr>
+                                <td>Methane</td>
+                                <td>
+                                    <select class="form-control" id="ch4Basis" onchange="updateCalculation()">
+                                        <option value="per kg">per kg</option>
+                                        <option value="per ton">per ton</option>
+                                        <option value="per L">per L</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-control" id="ch4Unit" onchange="updateCalculation()">
+                                        <option value="kg">kg</option>
+                                        <option value="g">g</option>
+                                        <option value="mg">mg</option>
+                                    </select>
+                                </td>
+                                <td><input type="number" class="form-control" id="methaneInput" placeholder="Enter CH4 value" oninput="updateCalculation()"></td>
+                                <td><input type="number" class="form-control" id="ch4GwpValue" oninput="updateCalculation()"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="form-group">
+                        <label for="calculatedEmissionFactor">Calculated Emission Factor</label>
+                        <input type="number" class="form-control" id="calculatedEmissionFactor" placeholder="Calculated Emission Factor" oninput="overrideCalculation()">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="saveGwpValues()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Include Bootstrap JS and jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+<!-- Custom Script -->
+<script>
+
+document.getElementById('productType').addEventListener('change', function() {
+    const selectedProductType = this.value;
+    console.log("Product Type Changed:", selectedProductType); // Debugging line
+    fetchTemplateData(selectedProductType);
+    fetchEmissionFactors(selectedProductType);
+});
+
+// Ensure productType is defined here
+const defaultProductType = 'hempMilk';
+document.getElementById('productType').value = defaultProductType;
+fetchTemplateData(defaultProductType);
+fetchEmissionFactors(defaultProductType);
+
+
+
+function saveAndGenerateNewScenario() {
+    // Step 1: Collect Scenario Info
+    const scenarioName = document.getElementById('newScenarioName').value;
+    const createdDate = document.getElementById('newCreatedDate').value;
+    const farmLandArea = document.getElementById('newFarmLandArea').value;
+    const areaUnit = document.getElementById('newAreaUnit').value;
+    const productType = document.getElementById('productType').value;
+    const comments = document.getElementById('newLandComments').value;
+
+    // Step 2: Collect Data from Stages
+    const rawMaterialProcesses = collectStageData('raw-material-stage');
+    const manufacturingProcesses = collectStageData('manufacturing-stage');
+    const transportationProcesses = collectStageData('transportation-stage');
+    const emissionFactors = collectEmissionFactors();
+
+    // Step 3: Structure the Data
+    const payload = {
+        product_system_name: scenarioName,
+        created_date: createdDate,
+        farm_land_area: {
+            value: parseFloat(farmLandArea),
+            unit: areaUnit
+        },
+        product_type: productType,
+        comments: comments,
+        stages: [
+            {
+                stage: "Raw Material",
+                processes: rawMaterialProcesses
+            },
+            {
+                stage: "Manufacturing",
+                processes: manufacturingProcesses
+            },
+            {
+                stage: "Transportation",
+                processes: transportationProcesses
+            }
+        ],
+        emission_factors: emissionFactors
+    };
+
+    // Step 4: Send Data to MongoDB via FastAPI
+    fetch('http://127.0.0.1:8000/v1/scenarios', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Scenario saved successfully:', data);
+        // Redirect to results page or display a success message
+        window.location.href = 'results.html';
+    })
+    .catch(error => console.error('Error saving scenario:', error));
+}
+
+// Helper Function to Collect Data from Stages
+function collectStageData(stageId) {
+    const rows = document.querySelectorAll(`#${stageId} tbody tr`);
+    const processes = [];
+
+    rows.forEach(row => {
+        const process = row.querySelector('.process-input').value;
+        const amount = parseFloat(row.querySelector('.amount-input').value);
+        const unit = row.querySelector('.unit-select').value;
+        const basis = row.querySelector('.basis-select').value;
+
+        processes.push({
+            process: process,
+            amount: amount,
+            unit: unit,
+            basis: basis
+        });
+    });
+
+    return processes;
+}
+
+// Helper Function to Collect Emission Factors
+function collectEmissionFactors() {
+    const rows = document.querySelectorAll('#emissionFactorsTableBody tr');
+    const factors = [];
+
+    rows.forEach(row => {
+        const process = row.querySelector('td:nth-child(1)').textContent;
+        const basis = row.querySelector('td:nth-child(2)').textContent;
+        const value = parseFloat(row.querySelector('td:nth-child(3) input').value);
+        const source = row.querySelector('td:nth-child(4)').textContent;
+
+        factors.push({
+            process: process,
+            basis: basis,
+            value: value,
+            source: source
+        });
+    });
+
+    return factors;
+}
+
+
+
+//end of saving scenario
+
+            // Fetch data from the FastAPI endpoint and populate the table
+function fetchEmissionFactors(productType) {
+    fetch(`http://127.0.0.1:8000/v1/emissions?product_type=${productType}`)
+        .then(response => {
+            console.log("Response Status:", response.status);  // Check the status
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("Received Data:", data);  // Log received data
+            const tableBody = document.getElementById('emissionFactorsTableBody');
+            tableBody.innerHTML = '';  // Clear existing rows
+
+            // Check if the data is an array before processing
+            if (Array.isArray(data)) {
+                data.forEach(item => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${item.name}</td>
+                        <td>${item.unit}</td>
+                        <td class="amount-column"><input type="number" class="form-control" value="${item.value}" readonly></td>
+                        <td>${item.source}</td>
+                        <td>
+                            <button class="btn btn-sm btn-warning" onclick="showEditModal(this.parentElement.parentElement)">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="this.parentElement.parentElement.remove()">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </button>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } else {
+                console.error('Expected an array but received:', data);
+            }
+        })
+        .catch(error => console.error('Error fetching emission factors:', error));
+}
+
+function showEditModal(row) {
+    // Mark the row as selected
+    row.classList.add('selected-row');
+
+    // Extract and populate modal fields as before
+    var carbonDioxideValue = row.cells[2].querySelector('input').value;
+    document.getElementById('calculatedEmissionFactor').value = carbonDioxideValue;
+
+    // Show the modal
+    $('#editGwpModal').modal('show');
+}
+
+
+function saveGwpValues() {
+    var carbonDioxide = document.getElementById('calculatedEmissionFactor').value;
+
+    // Find the selected row
+    var row = document.querySelector('.selected-row');
+    if (row) {
+        row.cells[2].querySelector('input').value = carbonDioxide; // Update CO2 value
+        row.classList.remove('selected-row'); // Remove the selection class
+    }
+
+    // Close the modal after saving
+    $('#editGwpModal').modal('hide');
+}
+
+function updateGwpValues() {
+    var method = document.getElementById('gwpMethodSelect').value;
+    var gwpValues = {
+        method1: { co2: 1.0, n2o: 273, ch4: 29.8 },
+        method2: { co2: 1.0, n2o: 325, ch4: 25 },
+        method3: { co2: 1.0, n2o: 298, ch4: 27.6 }
+    };
+
+    var selectedGwp = gwpValues[method];
+
+    document.getElementById('co2GwpValue').value = selectedGwp.co2;
+    document.getElementById('n2oGwpValue').value = selectedGwp.n2o;
+    document.getElementById('ch4GwpValue').value = selectedGwp.ch4;
+
+    updateCalculation(); // Recalculate after updating GWP values
+}
+function updateCalculation() {
+    var co2Value = document.getElementById('carbonDioxideInput').value || 0;
+    var n2oValue = document.getElementById('nitroxideInput').value || 0;
+    var ch4Value = document.getElementById('methaneInput').value || 0;
+
+    var co2Gwp = document.getElementById('co2GwpValue').value || 0;
+    var n2oGwp = document.getElementById('n2oGwpValue').value || 0;
+    var ch4Gwp = document.getElementById('ch4GwpValue').value || 0;
+
+    // Convert values based on selected unit and basis
+    var co2FinalValue = convertValue(co2Value, document.getElementById('co2Basis').value, document.getElementById('co2Unit').value);
+    var n2oFinalValue = convertValue(n2oValue, document.getElementById('n2oBasis').value, document.getElementById('n2oUnit').value);
+    var ch4FinalValue = convertValue(ch4Value, document.getElementById('ch4Basis').value, document.getElementById('ch4Unit').value);
+
+    var totalEmissionFactor = (co2FinalValue * co2Gwp) + (n2oFinalValue * n2oGwp) + (ch4FinalValue * ch4Gwp);
+
+    document.getElementById('calculatedEmissionFactor').value = totalEmissionFactor;
+}
+
+function convertValue(value, basis, unit) {
+    var multiplier = 1;
+
+    // Basis conversion
+    if (basis === 'per ton') multiplier *= 1000;
+    if (basis === 'per L') multiplier *= 1; // Adjust as necessary
+
+    // Unit conversion
+    if (unit === 'g') multiplier *= 0.001;
+    if (unit === 'mg') multiplier *= 0.000001;
+
+    return value * multiplier;
+}
+function overrideCalculation() {
+    var customEmissionFactor = document.getElementById('calculatedEmissionFactor').value;
+
+    // If the user has entered a custom emission factor, stop further calculation updates
+    if (customEmissionFactor !== '') {
+        return;
+    }
+
+    updateCalculation();
+}   
+
+
+
+            function fetchTemplateData(productType) {
+                
+                const url = `http://127.0.0.1:8000/v1/template/${productType}`;
+                console.log("Fetching data from URL:", url); // Debugging line
+                fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log("Fetched Data:", data); // Debugging line
+                        populateRawMaterialTable(data.raw_material);
+                        populateManufacturingTable(data.manufacturing);
+                        populateTransportationTable(data.transportation);
+                    })
+                    .catch(error => console.error('Error fetching template:', error));
+                    
+            }           
+            function populateRawMaterialTable(rawMaterials,tbody) {
+                const tableBody = document.querySelector("#raw-material-stage tbody");
+                tableBody.innerHTML = '';  // Clear existing rows           
+                rawMaterials.forEach(material => {
+                    const newRow = document.createElement('tr');
+                
+                    newRow.innerHTML = `
+                        <td><input type="text" class="form-control process-input" value="${material.process}" disabled></td>
+                        <td><input type="number" class="form-control amount-input" value="${material.amount}" disabled></td>
+                        <td>
+                            <select class="form-select unit-select" disabled>
+                                <option value="tonnes" ${material.unit === 'tonnes' ? 'selected' : ''}>tonnes</option>
+                                <option value="kg" ${material.unit === 'kg' ? 'selected' : ''}>kg</option>
+                                <option value="g" ${material.unit === 'g' ? 'selected' : ''}>g</option>
+                                <option value="mg" ${material.unit === 'mg' ? 'selected' : ''}>mg</option>
+                                <option value="lbs" ${material.unit === 'lbs' ? 'selected' : ''}>lbs</option>
+                                <option value="L" ${material.unit === 'L' ? 'selected' : ''}>L</option>
+                                <option value="gal" ${material.unit === 'gal' ? 'selected' : ''}>gal</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="form-select basis-select" disabled>
+                                <option value="/ha.year" ${material.basis === '/ha.year' ? 'selected' : ''}>/ha.year</option>
+                                <option value="/acre.year" ${material.basis === '/acre.year' ? 'selected' : ''}>/acre.year</option>
+                                <option value="/ha" ${material.basis === '/ha' ? 'selected' : ''}>/ha</option>
+                                <option value="/acre" ${material.basis === '/acre' ? 'selected' : ''}>/acre</option>
+                                <option value="/year" ${material.basis === '/year' ? 'selected' : ''}>/year</option>
+                            </select>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-danger" onclick="this.parentElement.parentElement.remove()">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </button>
+                        </td>
+                    `;
+                    
+                    tableBody.appendChild(newRow);
+                });
+            }
+
+            function populateManufacturingTable(manufacturing) {
+                const tableBody = document.querySelector("#manufacturing-stage tbody");
+                tableBody.innerHTML = '';  // Clear existing rows
+            
+                manufacturing.forEach(item => {
+                    const newRow = document.createElement('tr');
+                
+                    newRow.innerHTML = `
+                        <td><input type="text" class="form-control process-input" value="${item.process}" disabled></td>
+                        <td><input type="number" class="form-control amount-input" value="${item.amount}" disabled></td>
+                        <td>
+                            <select class="form-select unit-select" disabled>
+                                <option value="tonnes" ${item.unit === 'tonnes' ? 'selected' : ''}>tonnes</option>
+                                <option value="kg" ${item.unit === 'kg' ? 'selected' : ''}>kg</option>
+                                <option value="g" ${item.unit === 'g' ? 'selected' : ''}>g</option>
+                                <option value="mg" ${item.unit === 'mg' ? 'selected' : ''}>mg</option>
+                                <option value="lbs" ${item.unit === 'lbs' ? 'selected' : ''}>lbs</option>
+                                <option value="L" ${item.unit === 'L' ? 'selected' : ''}>L</option>
+                                <option value="gal" ${item.unit === 'gal' ? 'selected' : ''}>gal</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="form-select basis-select" disabled>
+                                <option value="per ton" ${item.basis === 'per ton' ? 'selected' : ''}>per ton</option>
+                                <option value="per m3" ${item.basis === 'per m3' ? 'selected' : ''}>per m3</option>
+                            </select>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-danger" onclick="this.parentElement.parentElement.remove()">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </button>
+                        </td>
+                    `;
+                    
+                    tableBody.appendChild(newRow);
+                });
+            }
+            
+            
+            function populateTransportationTable(transportation) {
+                const tableBody = document.querySelector("#transportation-stage tbody");
+                tableBody.innerHTML = '';  // Clear existing rows
+            
+                transportation.forEach(item => {
+                    const newRow = document.createElement('tr');
+                
+                    newRow.innerHTML = `
+                        <td><input type="text" class="form-control process-input" value="${item.process}" disabled></td>
+                        <td><input type="number" class="form-control amount-input" value="${item.amount}" disabled></td>
+                        <td>
+                            <select class="form-select unit-select" disabled>
+                                <option value="per ton-km" ${item.unit === 'per ton-km' ? 'selected' : ''}>per ton-km</option>
+                                <option value="per kg" ${item.unit === 'per kg' ? 'selected' : ''}>per kg</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="form-select basis-select" disabled>
+                                <option value="per ton-km" ${item.basis === 'per ton-km' ? 'selected' : ''}>per ton-km</option>
+                            </select>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-danger" onclick="this.parentElement.parentElement.remove()">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </button>
+                        </td>
+                    `;
+                    
+                    tableBody.appendChild(newRow);
+                });
+            }
+            
+                                                
+            function addRow(stageId) {
+                // Get the table body for the specified stage
+                const tableBody = document.querySelector(`#${stageId} table tbody`);
+                
+                // Create a new row
+                const newRow = document.createElement("tr");
+            
+                // Set the inner HTML for the new row
+                newRow.innerHTML = `
+                    <td><input type="text" class="form-control process-input" value="New Process" disabled></td>
+                    <td><input type="number" class="form-control amount-input" value="0" disabled></td>
+                    <td>
+                        <select class="form-select unit-select" disabled>
+                            <option value="tonnes">tonnes</option>
+                            <option value="kg">kg</option>
+                            <option value="g">g</option>
+                            <option value="mg">mg</option>
+                            <option value="lbs">lbs</option>
+                            <option value="L">L</option>
+                            <option value="gal">gal</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select class="form-select basis-select" disabled>
+                            <option value="/ha.year">/ha.year</option>
+                            <option value="/acre.year">/acre.year</option>
+                            <option value="/ha">/ha</option>
+                            <option value="/acre">/acre</option>
+                            <option value="/year">/year</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-danger" onclick="this.parentElement.parentElement.remove()">
+                            <i class="fas fa-trash-alt"></i> Delete
+                        </button>
+                    </td>
+                `;
+                
+                // Append the new row to the table body
+                tableBody.appendChild(newRow);
+            }
+            
+            
+                    document.addEventListener('DOMContentLoaded', function() {
+                        // Set current date in the created date input field
+                        document.getElementById('newCreatedDate').value = new Date().toLocaleDateString();
+                    
+                        // Tab navigation function
+                        window.navigateToNewTab = function(tabId) {
+                            const tabTrigger = new bootstrap.Tab(document.getElementById(tabId));
+                            tabTrigger.show();
+                        };
+                    
+                        // Enable Facility Editing
+                        // Enable editing for process, amount, unit, and basis inputs/selects within a specific stage
+            window.enableFacilityEditing = function(stageId) {
+                const processInputs = document.querySelectorAll(`#${stageId} .process-input`);
+                const amountInputs = document.querySelectorAll(`#${stageId} .amount-input`);
+                const unitSelects = document.querySelectorAll(`#${stageId} .unit-select`);
+                const basisSelects = document.querySelectorAll(`#${stageId} .basis-select`);
+            
+                // Enable all process inputs, amount inputs, and select dropdowns
+                processInputs.forEach(input => input.disabled = false);
+                amountInputs.forEach(input => input.disabled = false);
+                unitSelects.forEach(select => select.disabled = false);
+                basisSelects.forEach(select => select.disabled = false);
+            
+                // Show the Save/Cancel buttons
+                document.querySelector(`#${stageId} .save-cancel-buttons`).style.display = 'block';
+            };
+            
+            // Save changes and disable editing for process, amount, unit, and basis inputs/selects within a specific stage
+            window.saveFacilityChanges = function(stageId) {
+                const updatedData = [];
+                const processInputs = document.querySelectorAll(`#${stageId} .process-input`);
+                const amountInputs = document.querySelectorAll(`#${stageId} .amount-input`);
+                const unitSelects = document.querySelectorAll(`#${stageId} .unit-select`);
+                const basisSelects = document.querySelectorAll(`#${stageId} .basis-select`);
+            
+                // Collect updated data from inputs and selects
+                processInputs.forEach(input => {
+                    updatedData.push({
+                        id: input.getAttribute('data-id'),
+                        value: input.value
+                    });
+                });
+                amountInputs.forEach(input => {
+                    updatedData.push({
+                        id: input.getAttribute('data-id'),
+                        value: parseFloat(input.value)
+                    });
+                });
+                unitSelects.forEach(select => {
+                    updatedData.push({
+                        id: select.getAttribute('data-id'),
+                        value: select.value
+                    });
+                });
+                basisSelects.forEach(select => {
+                    updatedData.push({
+                        id: select.getAttribute('data-id'),
+                        value: select.value
+                    });
+                });
+            
+                // Disable all process inputs, amount inputs, and select dropdowns
+                processInputs.forEach(input => input.disabled = true);
+                amountInputs.forEach(input => input.disabled = true);
+                unitSelects.forEach(select => select.disabled = true);
+                basisSelects.forEach(select => select.disabled = true);
+            
+                // Save to the server
+                saveEmissionFactors(updatedData);
+            
+                // Hide the Save/Cancel buttons
+                document.querySelector(`#${stageId} .save-cancel-buttons`).style.display = 'none';
+            };
+            
+            // Cancel changes and disable editing for process, amount, unit, and basis inputs/selects within a specific stage
+            window.cancelFacilityChanges = function(stageId) {
+                // Reload the data to revert changes
+                fetchEmissionFactors();
+            
+                // Disable all process inputs, amount inputs, and select dropdowns
+                const processInputs = document.querySelectorAll(`#${stageId} .process-input`);
+                const amountInputs = document.querySelectorAll(`#${stageId} .amount-input`);
+                const unitSelects = document.querySelectorAll(`#${stageId} .unit-select`);
+                const basisSelects = document.querySelectorAll(`#${stageId} .basis-select`);
+            
+                processInputs.forEach(input => input.disabled = true);
+                amountInputs.forEach(input => input.disabled = true);
+                unitSelects.forEach(select => select.disabled = true);
+                basisSelects.forEach(select => select.disabled = true);
+            
+                // Hide the Save/Cancel buttons
+                document.querySelector(`#${stageId} .save-cancel-buttons`).style.display = 'none';
+            };
+
+
+
+            // Save Scenario Info and navigate to Facility Details tab
+            window.saveScenarioInfo = function() {
+                const scenarioName = document.getElementById('newScenarioName').value;
+                const createdDate = document.getElementById('newCreatedDate').value;
+                const farmLandArea = document.getElementById('newFarmLandArea').value;
+                const areaUnit = document.getElementById('newAreaUnit').value;
+                const landComments = document.getElementById('newLandComments').value;
+
+                // Save or process this data as needed
+
+                // Move to the next tab
+                navigateToNewTab('new-facility-details-tab');
+            };
+
+          
+
+            // Fetch and display emission factors
+            fetchEmissionFactors();
+
+            // Enable editing for Emission Factors
+            window.enableEditing = function(stageId) {
+                const rows = document.querySelectorAll(`#${stageId} .amount-column input`);
+                rows.forEach(row => {
+                    row.removeAttribute('readonly');
+                    row.classList.add('editable');
+                });
+
+                // Show Save and Cancel buttons
+                document.querySelector(`#${stageId} .save-cancel-buttons`).style.display = 'block';
+            };
+
+            // Save changes and disable editing
+            window.saveChanges = function(stageId) {
+                const updatedData = [];
+                const rows = document.querySelectorAll(`#${stageId} .amount-column input`);
+                rows.forEach(row => {
+                    updatedData.push({
+                        id: row.getAttribute('data-id'),
+                        value: parseFloat(row.value)
+                    });
+                    row.setAttribute('readonly', 'true');
+                    row.classList.remove('editable');
+                });
+
+                // Save to the server
+                saveEmissionFactors(updatedData);
+
+                // Hide Save and Cancel buttons
+                document.querySelector(`#${stageId} .save-cancel-buttons`).style.display = 'none';
+            };
+
+            // Cancel changes and disable editing
+            window.cancelChanges = function(stageId) {
+                fetchEmissionFactors();  // Reload the data to revert changes
+
+                // Hide Save and Cancel buttons
+                document.querySelector(`#${stageId} .save-cancel-buttons`).style.display = 'none';
+            };
+
+            
+            function saveEmissionFactors(updatedData) {
+            // Prepare data structure expected by FastAPI
+            const payload = updatedData.map(data => ({
+                id: data.id,
+                name: document.querySelector(`[data-id="${data.id}"]`).closest('tr').querySelector('td:nth-child(1)').textContent.trim(),
+                unit: document.querySelector(`[data-id="${data.id}"]`).closest('tr').querySelector('td:nth-child(2)').textContent.trim(),
+                value: data.value,
+                source: document.querySelector(`[data-id="${data.id}"]`).closest('tr').querySelector('td:nth-child(4)').textContent.trim()
+            }));
+
+            fetch('http://127.0.0.1:8000/v1/emissions', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(errData => { throw new Error(JSON.stringify(errData)); });
+                }
+                return response.json();
+            })
+            .then(data => {
+                fetchEmissionFactors();  // Reload the data from the server
+            })
+            .catch(error => console.error('Error saving emission factors:', error));
+        }
+
+            function getLandAreaInHectares() {
+            const landArea = parseFloat(document.getElementById('newFarmLandArea').value);
+            const areaUnit = document.getElementById('newAreaUnit').value;
+            return areaUnit === 'acres' ? landArea / 1000 : landArea;
+        }
+
+            function buildPayload() {
+            const landAreaHectares = getLandAreaInHectares();
+
+            const rawMaterialsInputs = [
+                { name: "Seed Production", amount: parseFloat(document.querySelector('#raw-material-stage .amount-column input[data-id="seed-production"]').value) },
+                { name: "Fertilizer Production Urea-N", amount: parseFloat(document.querySelector('#raw-material-stage .amount-column input[data-id="fertilizer-production-urea"]').value) },
+                // Add other raw materials...
+            ];
+
+            const manufacturingInputs = [
+                { name: "Electricity", amount: parseFloat(document.querySelector('#manufacturing-stage .amount-column input[data-id="electricity"]').value) },
+                // Add other manufacturing inputs...
+            ];
+
+            const transportationInputs = [
+                { name: "Transportation, light commercial vehicle", amount: parseFloat(document.querySelector('#transportation-stage .amount-column input[data-id="transport-light-commercial"]').value) },
+                // Add other transportation inputs...
+            ];
+
+            return {
+                land_area_hectares: landAreaHectares,
+                inputs: [
+                    { stage: "Raw Materials", inputs: rawMaterialsInputs },
+                    { stage: "Manufacturing", inputs: manufacturingInputs },
+                    { stage: "Transportation", inputs: transportationInputs },
+                ]
+            };
+        }
+
+
+
+
+        function displayResults(data) {
+            // Handle displaying the results in the "Results" tab
+            document.getElementById('results-tab').classList.add('show');
+            document.getElementById('results-tab').classList.add('active');
+            // Populate results...
+        }
+
+
+        });
+    </script>
+</body>
+</html>

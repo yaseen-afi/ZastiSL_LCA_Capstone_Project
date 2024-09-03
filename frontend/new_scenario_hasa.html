@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zasti Carbon Calculator - Create New Scenario</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container-fluid vh-100">
+        <div class="row h-100">
+            <div class="col-3 col-md-2 bg-green sidebar d-flex flex-column align-items-center">
+                <div class="logo-container py-4 text-center">
+                    <img src="images/logo.png" alt="Zasti Logo" class="logo img-fluid">
+                    <h4 class="text-white mt-3">Zasti Carbon Calculator</h4>
+                </div>
+                <ul class="nav flex-column w-100 mt-4">
+                    <li id="results-tab" class="nav-item text-white py-3 text-center mb-3">
+                        <a href="results.html" class="text-white text-decoration-none">
+                            <i class="fas fa-chart-bar me-2"></i> Results
+                        </a>
+                    </li>
+                    <li id="scenarios-tab" class="nav-item text-white py-3 text-center">
+                        <a href="scenarios.html" class="text-white text-decoration-none">
+                            <i class="fas fa-layer-group me-2"></i> Scenarios
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-9 main-content-new-scenario">
+                <h4 class="text-dark mb-4">Create New Scenario</h4>
+                <!-- Tabs Navigation -->
+                <ul class="nav nav-tabs" id="newScenarioTabs">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="new-scenario-info-tab" data-bs-toggle="tab" href="#new-scenario-info">Scenario Info</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="new-facility-details-tab" data-bs-toggle="tab" href="#new-facility-details">Life Cycle Data</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="new-emission-factors-tab" data-bs-toggle="tab" href="#new-emission-factors">Emission Factors</a>
+                    </li>
+                </ul>
+
+                <!-- Tab Contents -->
+                <div class="tab-content mt-3">
+                    <!-- Scenario Info Tab -->
+                    <div class="tab-pane fade show active" id="new-scenario-info">
+                        <form id="scenarioInfoForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="newScenarioName" class="form-label required">Scenario Name</label>
+                                    <input type="text" class="form-control" id="newScenarioName" placeholder="Enter scenario name" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="newCreatedDate" class="form-label">Created Date</label>
+                                    <input type="text" class="form-control" id="newCreatedDate" value="" readonly>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="newFarmLandArea" class="form-label required">Farm Land Area</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="newFarmLandArea" placeholder="Enter area" required>
+                                        <select class="form-select" id="newAreaUnit">
+                                            <option value="acres">Acres</option>
+                                            <option value="hectares">Hectares</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label for="newLandComments" class="form-label optional">Comments (Optional)</label>
+                                    <textarea class="form-control" id="newLandComments" rows="3" placeholder="Enter any comments..."></textarea>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="d-flex justify-content-between mt-4">
+                            <button class="btn btn-secondary" onclick="window.location.href='scenarios.html'">Back</button>
+                            <button class="btn btn-primary" onclick="saveScenarioInfo()">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Facility Details Tab -->
+                    <div class="tab-pane fade" id="new-facility-details">
+                        <!-- Facility Details Tabs -->
+                        <ul class="nav nav-pills mb-3" id="facilityDetailsTabs">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="raw-material-stage-tab" data-bs-toggle="pill" href="#raw-material-stage">Raw Material Stage</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="manufacturing-stage-tab" data-bs-toggle="pill" href="#manufacturing-stage">Manufacturing</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="transportation-stage-tab" data-bs-toggle="pill" href="#transportation-stage">Transportation</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="use-stage-tab" data-bs-toggle="pill" href="#use-stage">Use Stage</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="disposal-stage-tab" data-bs-toggle="pill" href="#disposal-stage">Disposal </a>
+                            </li>
+                        </ul>
+
+
+
+
+
+                        <div class="tab-content">
+  
+
+
+
+
+                            <!-- Raw Material Stage -->
+    <div class="tab-pane fade show active" id="raw-material-stage">
+        <button class="btn btn-primary mb-3" onclick="enableFacilityEditing('raw-material-stage')">Edit</button>
+        <div class="save-cancel-buttons mb-3" style="display: none;">
+            <button class="btn btn-success" onclick="saveFacilityChanges('raw-material-stage')">Save</button>
+            <button class="btn btn-secondary" onclick="cancelFacilityChanges('raw-material-stage')">Cancel</button>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Activity Data</th>
+                        <th class="amount-column">Amount</th>
+                        <th>Unit</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Seed Production</td>
+                        <td class="amount-column">1,850</td>
+                        <td>tonnes/ha.year</td>
+                        <td>
+                            <button class="btn btn-sm btn-info" onclick="previewProcess('seed-production')">
+                                <i class="fas fa-eye"></i> Preview
+                            </button>
+                            <button class="btn btn-sm btn-warning" onclick="showEditModal('seed-production')">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteProcess('seed-production')">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Fertilizer Production Urea-N</td>
+                        <td class="amount-column">325</td>
+                        <td>tonnes/ha.year</td>
+                        <td>
+                            <button class="btn btn-sm btn-info" onclick="previewProcess('fertilizer-urea-n')">
+                                <i class="fas fa-eye"></i> Preview
+                            </button>
+                            <button class="btn btn-sm btn-warning" onclick="showEditModal('fertilizer-urea-n')">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteProcess('fertilizer-urea-n')">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Fertilizer production P205</td>
+                        <td class="amount-column">275</td>
+                        <td>tonnes/ha.year</td>
+                        <td>
+                            <button class="btn btn-sm btn-info" onclick="previewProcess('fertilizer-p205')">
+                                <i class="fas fa-eye"></i> Preview
+                            </button>
+                            <button class="btn btn-sm btn-warning" onclick="showEditModal('fertilizer-p205')">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteProcess('fertilizer-p205')">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Fertilizer production K20</td>
+                        <td class="amount-column">128</td>
+                        <td>tonnes/ha.year</td>
+                        <td>
+                            <button class="btn btn-sm btn-info" onclick="previewProcess('fertilizer-k20')">
+                                <i class="fas fa-eye"></i> Preview
+                            </button>
+                            <button class="btn btn-sm btn-warning" onclick="showEditModal('fertilizer-k20')">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteProcess('fertilizer-k20')">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Lime production CaC03</td>
+                        <td class="amount-column">490</td>
+                        <td>tonnes/ha.year</td>
+                        <td>
+                            <button class="btn btn-sm btn-info" onclick="previewProcess('lime-cac03')">
+                                <i class="fas fa-eye"></i> Preview
+                            </button>
+                            <button class="btn btn-sm btn-warning" onclick="showEditModal('lime-cac03')">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteProcess('lime-cac03')">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </button>
+                        </td>
+                    </tr>
+                    <!-- Add more rows as needed -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+  <!-- Modal Structure -->
+  <div class="modal fade" id="editGwpModal" tabindex="-1" aria-labelledby="editGwpModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editGwpModalLabel">GWP Values</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editGwpForm">
+                    <div class="mb-3">
+                        <label for="carbonDioxideInput" class="form-label">Carbon Dioxide</label>
+                        <input type="number" class="form-control" id="carbonDioxideInput" placeholder="Enter CO2 value">
+                    </div>
+                    <div class="mb-3">
+                        <label for="nitroxideInput" class="form-label">Nitroxide</label>
+                        <input type="number" class="form-control" id="nitroxideInput" placeholder="Enter N2O value">
+                    </div>
+                    <div class="mb-3">
+                        <label for="methaneInput" class="form-label">Methane</label>
+                        <input type="number" class="form-control" id="methaneInput" placeholder="Enter CH4 value">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="saveGwpValues()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Include Bootstrap JS and jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Custom Script -->
+<script>
+    // Function to show the edit modal
+    function showEditModal(processId) {
+        // You can use processId to load specific data into the modal if needed
+        $('#editGwpModal').modal('show');
+    }
+
+    // Function to save the GWP values (placeholder for your logic)
+    function saveGwpValues() {
+        var carbonDioxide = document.getElementById('carbonDioxideInput').value;
+        var nitroxide = document.getElementById('nitroxideInput').value;
+        var methane = document.getElementById('methaneInput').value;
+
+        // Implement your save logic here, e.g., sending data to the backend
+
+        // Close the modal after saving
+        $('#editGwpModal').modal('hide');
+    }
+</script>
+
+
+
+
+
+
+
+                            <!-- Manufacturing Stage -->
+                            <div class="tab-pane fade" id="manufacturing-stage">
+                                <button class="btn btn-primary mb-3" onclick="enableFacilityEditing('manufacturing-stage')">Edit</button>
+                                <div class="save-cancel-buttons mb-3" style="display: none;">
+                                    <button class="btn btn-success" onclick="saveFacilityChanges('manufacturing-stage')">Save</button>
+                                    <button class="btn btn-secondary" onclick="cancelFacilityChanges('manufacturing-stage')">Cancel</button>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover">
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th>Activity Data</th>
+                                                <th class="amount-column">Amount</th>
+                                                <th>Unit</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Electricity</td>
+                                                <td class="amount-column">10</td>
+                                                <td>kWh/ton</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Seeds for milling</td>
+                                                <td class="amount-column">1460</td>
+                                                <td>kWh/ton</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Cooling Duration Hrs</td>
+                                                <td class="amount-column">10</td>
+                                                <td>kWh/ton</td>
+                                            </tr>
+                                            <!-- Add more rows as needed -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Transportation Stage -->
+                            <div class="tab-pane fade" id="transportation-stage">
+                                <button class="btn btn-primary mb-3" onclick="enableFacilityEditing('transportation-stage')">Edit</button>
+                                <div class="save-cancel-buttons mb-3" style="display: none;">
+                                    <button class="btn btn-success" onclick="saveFacilityChanges('transportation-stage')">Save</button>
+                                    <button class="btn btn-secondary" onclick="cancelFacilityChanges('transportation-stage')">Cancel</button>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover">
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th>Activity Data</th>
+                                                <th class="amount-column">Amount</th>
+                                                <th>Unit</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Proportion of heat used vs wasted</td>
+                                                <td class="amount-column">30%</td>
+                                                <td>-</td>
+                                            </tr>
+                                            <!-- Add more rows as needed -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Use Stage (Empty) -->
+                            <div class="tab-pane fade" id="use-stage">
+                                <p>No data available for this stage.</p>
+                            </div>
+
+                            <!-- Disposal Stage (Empty) -->
+                            <div class="tab-pane fade" id="disposal-stage">
+                                <p>No data available for this stage.</p>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <button class="btn btn-secondary" onclick="navigateToNewTab('new-scenario-info-tab')">Back</button>
+                            <button class="btn btn-primary" onclick="navigateToNewTab('new-emission-factors-tab')">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Emission Factors Tab -->
+                    <div class="tab-pane fade" id="new-emission-factors">
+                        <!-- Button group with Back and Save and Generate buttons -->
+                        <div class="d-flex justify-content-between mt-4 mb-3">
+                            <button class="btn btn-secondary" onclick="navigateToNewTab('new-facility-details-tab')">Back</button>
+                            <button class="btn btn-success" onclick="saveAndGenerateNewScenario()">Save and Generate</button>                            
+                        </div>
+                        <button class="btn btn-primary mb-4" onclick="enableEditing('new-emission-factors')">Edit</button>
+                        <div class="save-cancel-buttons mb-3" style="display: none;">
+                            <button class="btn btn-success" onclick="saveChanges('new-emission-factors')">Save</button>
+                            <button class="btn btn-secondary" onclick="cancelChanges('new-emission-factors')">Cancel</button>
+                        </div>
+                        <form id="emissionFactorsForm">
+                            <!-- Add a scrollable container for the table -->
+                            <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                                <table class="table table-bordered">
+                                    <thead class="table-dark"> 
+                                        <tr>
+                                            <th>Process</th>
+                                            <th>Unit</th>
+                                            <th>Value</th>
+                                            <th>Source</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="emissionFactorsTableBody">
+                                        <!-- Table rows will be populated by JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set current date in the created date input field
+            document.getElementById('newCreatedDate').value = new Date().toLocaleDateString();
+
+            // Tab navigation function
+            window.navigateToNewTab = function(tabId) {
+                const tabTrigger = new bootstrap.Tab(document.getElementById(tabId));
+                tabTrigger.show();
+            };
+
+            // Enable Facility Editing
+            window.enableFacilityEditing = function(stageId) {
+                const table = document.querySelector(`#${stageId} table`);
+                const cells = table.querySelectorAll('tbody td.amount-column'); // Select only Amount column cells
+                cells.forEach(cell => {
+                    cell.setAttribute('contenteditable', 'true');
+                    cell.classList.add('editable');
+                });
+
+                // Show Save and Cancel buttons
+                document.querySelector(`#${stageId} .save-cancel-buttons`).style.display = 'block';
+            };
+
+            // Save Facility Changes
+            window.saveFacilityChanges = function(stageId) {
+                const table = document.querySelector(`#${stageId} table`);
+                const cells = table.querySelectorAll('tbody td.amount-column');
+                cells.forEach(cell => {
+                    cell.removeAttribute('contenteditable');
+                    cell.classList.remove('editable');
+                });
+
+                // Hide Save and Cancel buttons
+                document.querySelector(`#${stageId} .save-cancel-buttons`).style.display = 'none';
+            };
+
+            // Cancel Facility Changes
+            window.cancelFacilityChanges = function(stageId) {
+                const table = document.querySelector(`#${stageId} table`);
+                const cells = table.querySelectorAll('tbody td.amount-column');
+                cells.forEach(cell => {
+                    cell.removeAttribute('contenteditable');
+                    cell.classList.remove('editable');
+                    // Optionally revert changes here if you track original values
+                });
+
+                // Hide Save and Cancel buttons
+                document.querySelector(`#${stageId} .save-cancel-buttons`).style.display = 'none';
+            };
+
+            // Save Scenario Info and navigate to Facility Details tab
+            window.saveScenarioInfo = function() {
+                const scenarioName = document.getElementById('newScenarioName').value;
+                const createdDate = document.getElementById('newCreatedDate').value;
+                const farmLandArea = document.getElementById('newFarmLandArea').value;
+                const areaUnit = document.getElementById('newAreaUnit').value;
+                const landComments = document.getElementById('newLandComments').value;
+
+                // Save or process this data as needed
+
+                // Move to the next tab
+                navigateToNewTab('new-facility-details-tab');
+            };
+
+            // Save and Generate function
+            window.saveAndGenerateNewScenario = function() {
+                // Logic to save the scenario details goes here
+                window.location.href = 'results.html';
+            };
+
+            // Fetch and display emission factors
+            fetchEmissionFactors();
+
+            // Enable editing for Emission Factors
+            window.enableEditing = function(stageId) {
+                const rows = document.querySelectorAll(`#${stageId} .amount-column input`);
+                rows.forEach(row => {
+                    row.removeAttribute('readonly');
+                    row.classList.add('editable');
+                });
+
+                // Show Save and Cancel buttons
+                document.querySelector(`#${stageId} .save-cancel-buttons`).style.display = 'block';
+            };
+
+            // Save changes and disable editing
+            window.saveChanges = function(stageId) {
+                const updatedData = [];
+                const rows = document.querySelectorAll(`#${stageId} .amount-column input`);
+                rows.forEach(row => {
+                    updatedData.push({
+                        id: row.getAttribute('data-id'),
+                        value: parseFloat(row.value)
+                    });
+                    row.setAttribute('readonly', 'true');
+                    row.classList.remove('editable');
+                });
+
+                // Save to the server
+                saveEmissionFactors(updatedData);
+
+                // Hide Save and Cancel buttons
+                document.querySelector(`#${stageId} .save-cancel-buttons`).style.display = 'none';
+            };
+
+            // Cancel changes and disable editing
+            window.cancelChanges = function(stageId) {
+                fetchEmissionFactors();  // Reload the data to revert changes
+
+                // Hide Save and Cancel buttons
+                document.querySelector(`#${stageId} .save-cancel-buttons`).style.display = 'none';
+            };
+
+            // Fetch data from the FastAPI endpoint and populate the table
+            function fetchEmissionFactors() {
+                fetch('http://127.0.0.1:8000/v1/emissions')
+                    .then(response => response.json())
+                    .then(data => {
+                        const tableBody = document.getElementById('emissionFactorsTableBody');
+                        tableBody.innerHTML = '';  // Clear existing rows
+
+                        data.forEach(item => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>${item.name}</td>
+                                <td>${item.unit}</td>
+                                <td class="amount-column"><input type="number" class="form-control" value="${item.value}" data-id="${item.id}" readonly></td>
+                                <td>${item.source}</td>
+                            `;
+                            tableBody.appendChild(row);
+                        });
+                    })
+                    .catch(error => console.error('Error fetching emission factors:', error));
+            }
+
+            function saveEmissionFactors(updatedData) {
+            // Prepare data structure expected by FastAPI
+            const payload = updatedData.map(data => ({
+                id: data.id,
+                name: document.querySelector(`[data-id="${data.id}"]`).closest('tr').querySelector('td:nth-child(1)').textContent.trim(),
+                unit: document.querySelector(`[data-id="${data.id}"]`).closest('tr').querySelector('td:nth-child(2)').textContent.trim(),
+                value: data.value,
+                source: document.querySelector(`[data-id="${data.id}"]`).closest('tr').querySelector('td:nth-child(4)').textContent.trim()
+            }));
+
+            fetch('http://127.0.0.1:8000/v1/emissions', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(errData => { throw new Error(JSON.stringify(errData)); });
+                }
+                return response.json();
+            })
+            .then(data => {
+                fetchEmissionFactors();  // Reload the data from the server
+            })
+            .catch(error => console.error('Error saving emission factors:', error));
+        }
+
+            function getLandAreaInHectares() {
+            const landArea = parseFloat(document.getElementById('newFarmLandArea').value);
+            const areaUnit = document.getElementById('newAreaUnit').value;
+            return areaUnit === 'acres' ? landArea / 1000 : landArea;
+        }
+
+            function buildPayload() {
+            const landAreaHectares = getLandAreaInHectares();
+
+            const rawMaterialsInputs = [
+                { name: "Seed Production", amount: parseFloat(document.querySelector('#raw-material-stage .amount-column input[data-id="seed-production"]').value) },
+                { name: "Fertilizer Production Urea-N", amount: parseFloat(document.querySelector('#raw-material-stage .amount-column input[data-id="fertilizer-production-urea"]').value) },
+                // Add other raw materials...
+            ];
+
+            const manufacturingInputs = [
+                { name: "Electricity", amount: parseFloat(document.querySelector('#manufacturing-stage .amount-column input[data-id="electricity"]').value) },
+                // Add other manufacturing inputs...
+            ];
+
+            const transportationInputs = [
+                { name: "Transportation, light commercial vehicle", amount: parseFloat(document.querySelector('#transportation-stage .amount-column input[data-id="transport-light-commercial"]').value) },
+                // Add other transportation inputs...
+            ];
+
+            return {
+                land_area_hectares: landAreaHectares,
+                inputs: [
+                    { stage: "Raw Materials", inputs: rawMaterialsInputs },
+                    { stage: "Manufacturing", inputs: manufacturingInputs },
+                    { stage: "Transportation", inputs: transportationInputs },
+                ]
+            };
+        }
+
+
+            function saveAndGenerateNewScenario() {
+            const payload = buildPayload();
+
+            fetch('http://127.0.0.1:8000/v1/calculate-carbon-footprint/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            })
+            .then(response => response.json())
+            .then(data => {
+                displayResults(data);
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function displayResults(data) {
+            // Handle displaying the results in the "Results" tab
+            document.getElementById('results-tab').classList.add('show');
+            document.getElementById('results-tab').classList.add('active');
+            // Populate results...
+        }
+
+
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+fastapi 
+uvicorn 
+motor 
+pydantic-settings
+matplotlib
+seaborn
+jinja2
+plotly
+openai==0.28
+langchain_community
+python-dotenv
+python-multipart
+docx2txt

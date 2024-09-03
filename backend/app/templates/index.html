@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carbon Footprint Calculator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Carbon Footprint Calculator</h1>
+        <form id="carbonForm">
+            <!-- Stage Inputs -->
+            <div id="stageInputs">
+                <!-- Input fields for stages will be dynamically added here -->
+            </div>
+            <button type="button" class="btn btn-primary" onclick="addStageInput()">Add Stage</button>
+            <button type="submit" class="btn btn-success">Calculate Carbon Footprint</button>
+        </form>
+
+        <div id="results" class="mt-5">
+            <!-- Results will be displayed here -->
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let stageCount = 0;
+
+        function addStageInput() {
+            stageCount++;
+            const stageInputHtml = `
+                <div class="card mt-3">
+                    <div class="card-header">
+                        Stage ${stageCount}
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="stage${stageCount}Name">Stage Name</label>
+                            <input type="text" class="form-control" id="stage${stageCount}Name" placeholder="e.g., Raw Materials">
+                        </div>
+                        <div class="form-group">
+                            <label for="stage${stageCount}Input">Activity Data (amount)</label>
+                            <input type="number" class="form-control" id="stage${stageCount}Input" placeholder="Enter amount">
+                        </div>
+                    </div>
+                </div>
+            `;
+            $('#stageInputs').append(stageInputHtml);
+        }
+
+        $('#carbonForm').on('submit', function(e) {
+            e.preventDefault();
+
+            let inputs = [];
+            for (let i = 1; i <= stageCount; i++) {
+                inputs.push({
+                    stage: $(`#stage${i}Name`).val(),
+                    amount: parseFloat($(`#stage${i}Input`).val())
+                });
+            }
+
+            $.ajax({
+                url: '/calculate-carbon-footprint',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(inputs),
+                success: function(response) {
+                    let resultHtml = '<h3>Results</h3>';
+                    response.stages.forEach(stage => {
+                        resultHtml += `
+                            <h4>${stage.stage}</h4>
+                            <ul>
+                                ${stage.activity_data.map(data => `
+                                    <li>${data.name}: ${data.amount} * ${data.emission_factor} = ${data.emission} kg CO2 eq.</li>
+                                `).join('')}
+                            </ul>
+                            <p><strong>Total Emission for ${stage.stage}: ${stage.total_emission} kg CO2 eq.</strong></p>
+                        `;
+                    });
+                    resultHtml += `<p><strong>Total Carbon Footprint: ${response.total_carbon_footprint} kg CO2 eq.</strong></p>`;
+                    $('#results').html(resultHtml);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

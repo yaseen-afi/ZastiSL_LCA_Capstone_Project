@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zasti Carbon Calculator - Product Systems</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Loader -->
+    <div class="loader">
+        <div class="justify-content-center jimu-primary-loading"></div>
+    </div>
+
+    <div class="container-fluid vh-100">
+        <div class="row h-100">
+            <div class="col-3 col-md-2 bg-green sidebar d-flex flex-column align-items-center">
+                <div class="logo-container py-4 text-center">
+                    <img src="images/logo.png" alt="Zasti Logo" class="logo img-fluid">
+                    <h4 class="text-white mt-3">Zasti Carbon Calculator</h4>
+                </div>
+                <ul class="nav flex-column w-100 mt-4">
+                    <li id="results-tab" class="nav-item text-white py-3 text-center mb-3">
+                        <a href="results.html" class="text-white text-decoration-none">
+                            <i class="fas fa-chart-bar me-2"></i> Carbon Footprint
+                        </a>
+                    </li>
+                    <li id="scenarios-tab" class="nav-item active text-white py-3 text-center">
+                        <a href="scenarios.html" class="text-white text-decoration-none">
+                            <i class="fas fa-layer-group me-2"></i> Product System
+                        </a>
+                    </li>
+                    <li id="chat-tab" class="nav-item text-white py-3 text-center">
+                        <a href="chat.html" class="text-white text-decoration-none">
+                            <i class="fas fa-comment-dots me-2"></i> Chat with Zasti AI
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-8 col-md-9 main-content p-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="text-dark">Product System</h4>
+                    <div>
+                        <button class="btn btn-dark me-2" style="background-color: #085958e7; border-color: #085958e7;" onclick="window.location.href='new_scenario.html';">
+                            <i class="fas fa-plus-circle"></i> New Product System
+                        </button>                        
+                        <button class="btn btn-danger">
+                            <i class="fas fa-trash-alt"></i> Delete All
+                        </button>
+                    </div>
+                </div>
+                <table class="table table-bordered">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Name</th>
+                            <th>Created Date</th>
+                            <th>Product System</th>
+                            <th>Comments</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        <tr>
+                            <td>Seed Scenario</td>
+                            <td>Apr 15, 2024</td>
+                            <td>Seed Production Scenario</td>
+                            <td>
+                                <i class="fas fa-edit" style="color: #085958e7;"></i>
+                                <i class="fas fa-eye" style="color: black; margin-left: 8px;"></i>
+                                <i class="fas fa-trash-alt text-danger" style="margin-left: 8px;"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Wet Waste Scenario</td>
+                            <td>Apr 22, 2024</td>
+                            <td>Wet Waste Management Scenario</td>
+                            <td>
+                                <i class="fas fa-edit" style="color: #085958e7;"></i>
+                                <i class="fas fa-eye" style="color: black; margin-left: 8px;"></i>
+                                <i class="fas fa-trash-alt text-danger" style="margin-left: 8px;"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Straw Scenario</td>
+                            <td>May 02, 2024</td>
+                            <td>Straw Utilization Scenario</td>
+                            <td>
+                                <i class="fas fa-edit" style="color: #085958e7;"></i>
+                                <i class="fas fa-eye" style="color: black; margin-left: 8px;"></i>
+                                <i class="fas fa-trash-alt text-danger" style="margin-left: 8px;"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+    // Fetch scenarios from the API
+    fetch('http://localhost:8000/v1/scenarios')
+        .then(response => response.json())
+        .then(data => {
+            // Get the table body element
+            const tableBody = document.querySelector("table tbody");
+
+            // Clear any existing rows
+            tableBody.innerHTML = "";
+
+            // Iterate over each scenario and create table rows
+            data.forEach(scenario => {
+                const row = document.createElement("tr");
+
+                // Create table cells for each field
+                const nameCell = document.createElement("td");
+                nameCell.textContent = scenario.product_system_name;
+                row.appendChild(nameCell);
+
+                const dateCell = document.createElement("td");
+                dateCell.textContent = scenario.created_date;
+                row.appendChild(dateCell);
+
+                const typeCell = document.createElement("td");
+                typeCell.textContent = scenario.product_type;
+                row.appendChild(typeCell);
+
+                const commentsCell = document.createElement("td");
+                commentsCell.textContent = scenario.comments;
+                row.appendChild(commentsCell);
+
+                const actionsCell = document.createElement("td");
+                actionsCell.innerHTML = `
+                    <i class="fas fa-edit" style="color: #085958e7;"></i>
+                    <i class="fas fa-eye" style="color: black; margin-left: 8px;"></i>
+                    <i class="fas fa-trash-alt text-danger" style="margin-left: 8px;"></i>
+                `;
+                row.appendChild(actionsCell);
+
+                // Append the row to the table body
+                tableBody.appendChild(row);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching scenarios:', error);
+            // Optionally display an error message in the UI
+        });
+});
+            </script>
+
+        </div>
+    </div>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
