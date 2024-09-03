@@ -41,8 +41,17 @@ Install all required dependencies using the `requirements.txt` file:
 ```bash
 pip install -r requirements.txt
 ```
+## 4. Create the .env File
 
-## 4. Run the Application
+### Inside the backend directory, create a .env file and fill in the following values:
+
+```bash
+MONGODB_URI=""
+MONGODB_NAME=""
+OPENAI_API_KEY=""
+```
+
+## 5. Run the Application
 
 Start the FastAPI application using Uvicorn:
 
@@ -50,7 +59,7 @@ Start the FastAPI application using Uvicorn:
 uvicorn main:app --reload
 ```
 
-## 5. Access the Frontend
+## 6. Access the Frontend
 
 Navigate to the frontend directory and open `index.html` in your browser:
 
