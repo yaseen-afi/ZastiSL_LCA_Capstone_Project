@@ -69,7 +69,7 @@ open index.html  # For MacOS
 # OR
 xdg-open index.html  # For Linux
 # OR
-start index.html  # For Windows
+open index.html  # For Windows
 ```
 
 Now, you can use the application!
