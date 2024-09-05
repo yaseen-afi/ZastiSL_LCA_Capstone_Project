@@ -43,7 +43,7 @@ pip install -r requirements.txt
 ```
 ## 4. Create the .env File
 
-### Inside the backend directory, create a .env file and fill in the following values:
+Inside the backend directory, create a .env file and fill in the following values:
 
 ```bash
 MONGODB_URI=""
@@ -69,7 +69,7 @@ open index.html  # For MacOS
 # OR
 xdg-open index.html  # For Linux
 # OR
-start index.html  # For Windows
+open index.html  # For Windows
 ```
 
 Now, you can use the application!
